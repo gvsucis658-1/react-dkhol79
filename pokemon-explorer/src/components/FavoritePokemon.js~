@@ -1,0 +1,137 @@
+import React, { useState } from 'react';
+
+function FavoritePokemon({ favorites, setFavorites }) {
+  const [newPokemon, setNewPokemon] = useState({
+    name: '',
+    height: '',
+    weight: '',
+    type: '',
+    sprite: ''
+  });
+
+  const handleInputChange = (e) => {
+    setNewPokemon({
+      ...newPokemon,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const addCustomPokemon = (e) => {
+    e.preventDefault();
+    const customPoke = {
+      id: Date.now(),
+      name: newPokemon.name,
+      height: parseFloat(newPokemon.height) * 10,
+      weight: parseFloat(newPokemon.weight) * 10,
+      types: [{ type: { name: newPokemon.type } }],
+      sprites: {
+        front_default: newPokemon.sprite || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'
+      }
+    };
+    setFavorites(prev => [...prev, customPoke]);
+    setNewPokemon({ name: '', height: '', weight: '', type: '', sprite: '' });
+  };
+
+  const removeFavorite = (id) => {
+    setFavorites(prev => prev.filter(poke => poke.id !== id));
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <h2 className="text-2xl font-bold mb-4 text-purple-800">Favorite Pokémon</h2>
+
+      {/* Form to add custom Pokémon */}
+      <form onSubmit={addCustomPokemon} className="mb-6 p-4 bg-gray-50 rounded-lg">
+        <h3 className="text-lg font-semibold mb-2">Add Custom Pokémon</h3>
+        <div className="grid grid-cols-1 gap-2">
+          <input
+            type="text"
+            name="name"
+            value={newPokemon.name}
+            onChange={handleInputChange}
+            placeholder="Name"
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="number"
+            name="height"
+            value={newPokemon.height}
+            onChange={handleInputChange}
+            placeholder="Height (m)"
+            className="p-2 border rounded"
+            step="0.1"
+            required
+          />
+          <input
+            type="number"
+            name="weight"
+            value={newPokemon.weight}
+            onChange={handleInputChange}
+            placeholder="Weight (kg)"
+            className="p-2 border rounded"
+            step="0.1"
+            required
+          />
+          <input
+            type="text"
+            name="type"
+            value={newPokemon.type}
+            onChange={handleInputChange}
+            placeholder="Type"
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="url"
+            name="sprite"
+            value={newPokemon.sprite}
+            onChange={handleInputChange}
+            placeholder="Image URL (optional)"
+            className="p-2 border rounded"
+          />
+          <button
+            type="submit"
+            className="bg-purple-500 text-white py-2 rounded hover:bg-purple-600 transition-colors"
+          >
+            Add Pokémon
+          </button>
+        </div>
+      </form>
+
+      {/* Favorites List */}
+      {favorites.length === 0 ? (
+        <p className="text-gray-500">No favorite Pokémon yet!</p>
+      ) : (
+        <div className="space-y-4">
+          {favorites.map((poke) => (
+            <div
+              key={poke.id}
+              className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
+            >
+              <img
+                src={poke.sprites.front_default}
+                alt={poke.name}
+                className="w-16 h-16"
+              />
+              <div className="flex-1">
+                <h3 className="font-semibold capitalize">{poke.name}</h3>
+                <p className="text-sm text-gray-600">
+                  H: {poke.height/10}m | W: {poke.weight/10}kg | Type: {poke.types[0].type.name}
+                </p>
+              </div>
+              <button
+                onClick={() => removeFavorite(poke.id)}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default FavoritePokemon;
