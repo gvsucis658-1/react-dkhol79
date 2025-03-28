@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Pikachu",
+    "height": 4,
+    "weight": 60,
+    "type": "electric",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+  },
+  {
+    "id": 4,
+    "name": "charizard",
+    "height": 17,
+    "weight": 905,
+    "type": "fire",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
+  },
+  {
+    "id": 5,
+    "name": "dialga",
+    "height": 54,
+    "weight": 6830,
+    "type": "steel",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/483.png"
+  }
+]
